@@ -7,14 +7,14 @@ import { ProductCard } from "@/components/products/product-card";
 import { categories, products } from "@/lib/mock/catalog";
 
 type ShopSearch = {
-  q: string;
-  category: string;
+  q?: string;
+  category?: string;
 };
 
 export const Route = createFileRoute("/shop")({
   validateSearch: (search: Record<string, unknown>): ShopSearch => ({
-    q: typeof search.q === "string" ? search.q : "",
-    category: typeof search.category === "string" ? search.category : "",
+    q: typeof search["q"] === "string" ? (search["q"] as string) : "",
+    category: typeof search["category"] === "string" ? (search["category"] as string) : "",
   }),
   head: () => ({
     meta: [
@@ -37,7 +37,7 @@ export const Route = createFileRoute("/shop")({
 });
 
 function ShopPage() {
-  const { q, category } = Route.useSearch();
+  const { q = "", category = "" } = Route.useSearch();
   const navigate = Route.useNavigate();
 
   const list = products.filter((p) => {
